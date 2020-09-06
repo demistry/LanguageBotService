@@ -20,7 +20,7 @@ func Init(){
 	if err != nil{
 		log.Fatal("Could not initialize listener due to ", err.Error())
 	}
-	fmt.Println("Running server on port: 50051")
+	fmt.Println("Running server on port:",PORT)
 	s := grpc.NewServer()
 	grpcUtil.RegisterBotServiceServer(s, &server{})
 
@@ -34,13 +34,15 @@ type server struct {
 }
 
 func (s server) GenerateWord(ctx context.Context, request *grpcUtil.WordRequest) (*grpcUtil.WordResponse, error) {
-	fmt.Println("Calling generate word...")
 	charCount := request.GetWordCount()
-	word,_ := wordgen.GetRandomWord(int(charCount))
+	word, err := wordgen.GetAndReturnWordForCount(int(charCount))
+	if err != nil{
+		return nil, err
+	}
 	return &grpcUtil.WordResponse{
-		Word:  word       ,
-		PartOfSpeech: "Part of speech is i dunno",
-		Definition:   []string{},
+		Word:  word.Word       ,
+		PartOfSpeech: "Part of speech is i dunno now sha",
+		Definition:   []string{word.Definition},
 		Example:      []string{},
 	}, nil
 }
