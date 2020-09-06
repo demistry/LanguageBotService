@@ -9,9 +9,25 @@ import (
 )
 
 type WordObject struct{
-	Word string
-	Definition string
+	Word string `json:"word"`
+	Meaning []MeaningObject `json:"meanings"`
 }
+
+type WordResponse struct {
+	WordText string
+	WordData []WordObject
+}
+
+type MeaningObject struct {
+	PartOfSpeech string `json:"partOfSpeech"`
+	Definitions []DefinitionObject `json:"definitions"`
+}
+
+type DefinitionObject struct {
+	Definition string `json:"definition"`
+	Example string `json:"example"`
+}
+
 func shuffleWords(){
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(totalWords), func(i, j int) { totalWords[i], totalWords[j] = totalWords[j], totalWords[i] })

@@ -11,10 +11,14 @@ service BotService{
 message WordRequest{
   int32 word_count = 1;
 }
-
 message WordResponse{
+  bool status = 1;
+  string message = 2;
+  WordData data = 3;
+}
+message WordData{
   string word = 1;
-  string part_of_speech = 2;
+  repeated string part_of_speech = 2;
   repeated string definition = 3;
   repeated string example = 4;
 }
