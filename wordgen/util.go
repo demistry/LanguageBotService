@@ -20,7 +20,6 @@ func shuffleWords(){
 //Generates and returns a random word based on character count
 func getRandomWord(characterCount int) (string,error){
 	shuffleWords()
-	lengthOfTotalWords := len(totalWords)
 	var idx = -1
 	for i := range totalWords{
 		if len(totalWords[i]) == characterCount{

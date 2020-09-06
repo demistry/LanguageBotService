@@ -1,6 +1,7 @@
 package wordgen
 
 import (
+	"github.com/joho/godotenv"
 	"log"
 	"os"
 )
@@ -13,9 +14,16 @@ const (
 var (
 	ByteNewline = []byte(NewLineChar)
 	totalWords  []string
+	dictionary_api_base string
 )
 
 func Init() {
+	err := godotenv.Load("./secrets.env")
+	if err != nil {
+		log.Fatal("Error in loading .env file in app",err)
+	}
+
+	dictionary_api_base = os.Getenv("DICTIONARY_BASE_API")
 	file,err := os.Open(FileName)
 	if err != nil{
 		log.Fatalf("Error in opening file %v", err)
@@ -32,7 +40,7 @@ func GetAndReturnWordForCount(characterCount int) (*WordObject, error){
 	if err != nil{return nil,err}
 	//make external api call here
 	return &WordObject{
-		Word:       localWord,
+		Word:      dictionary_api_base + localWord,
 		Definition: localWord + " Definition",
 	}, nil
 }
